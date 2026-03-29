@@ -1,0 +1,110 @@
+services:
+
+  # ─────────────────────────────────────────
+  # MySQL 8
+  # ─────────────────────────────────────────
+  mysql:
+    image: mysql:8.0
+    container_name: fin_buddy_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: fin_buddy
+      MYSQL_USER: fin_buddy
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root_secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_secret"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────
+  # Redis 7 (cache e filas)
+  # ─────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: fin_buddy_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─────────────────────────────────────────
+  # Backend Laravel
+  # ─────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fin_buddy_backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_NAME: "Fin Buddy"
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      APP_LOCALE: pt_BR
+      APP_FALLBACK_LOCALE: pt_BR
+      APP_FAKER_LOCALE: pt_BR
+
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: fin_buddy
+      DB_USERNAME: fin_buddy
+      DB_PASSWORD: secret
+
+      CACHE_STORE: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: "null"
+
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+
+      BCRYPT_ROUNDS: 12
+      LOG_LEVEL: debug
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www/backend
+      - /var/www/backend/vendor        # preserva vendor do container
+    working_dir: /var/www/backend
+
+  # ─────────────────────────────────────────
+  # Frontend Vue.js + Vite
+  # ─────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: fin_buddy_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000/api
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules           # preserva node_modules do container
+
+volumes:
+  mysql_data:
+  redis_data:
