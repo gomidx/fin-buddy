@@ -58,7 +58,9 @@ const chartOptions = {
 <template>
   <div class="card">
     <h3 class="card-title">Evolução Financeira</h3>
-    <Line :data="chartData" :options="chartOptions" />
+    <div class="chart-wrapper">
+      <Line :data="chartData" :options="chartOptions" />
+    </div>
   </div>
 </template>
 
@@ -77,5 +79,11 @@ const chartOptions = {
   font-size: 15px;
   font-weight: 600;
   color: var(--color-text);
+}
+
+.chart-wrapper {
+  width: 100%;
+  overflow: hidden;
+  min-width: 0;
 }
 </style>

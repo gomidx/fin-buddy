@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { Eye, EyeOff } from 'lucide-vue-next'
+import FinBuddyLogo from '../components/ui/FinBuddyLogo.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -69,8 +70,7 @@ function handleError(e) {
   <div class="auth-page">
     <div class="auth-card">
       <div class="brand">
-        <div class="brand-dot"></div>
-        <span class="brand-name">Fin Buddy</span>
+        <FinBuddyLogo :width="200" />
       </div>
 
       <div class="tab-switcher">
@@ -228,17 +228,6 @@ function handleError(e) {
   margin-bottom: var(--spacing-lg);
 }
 
-.brand-dot {
-  width: 36px;
-  height: 36px;
-  background: var(--color-primary);
-  border-radius: 50%;
-}
-
-.brand-name {
-  font-size: 22px;
-  font-weight: 700;
-}
 
 .tab-switcher {
   display: flex;

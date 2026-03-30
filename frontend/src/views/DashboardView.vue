@@ -114,6 +114,7 @@ function formatCurrency(value) {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overflow-x: hidden;
 }
 
 .main-content {
@@ -121,6 +122,7 @@ function formatCurrency(value) {
   max-width: 1280px;
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg);
@@ -136,6 +138,12 @@ function formatCurrency(value) {
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: var(--spacing-md);
+  min-width: 0;
+}
+
+.charts-row > * {
+  min-width: 0;
+  overflow: hidden;
 }
 
 .loading-state {
@@ -166,6 +174,9 @@ function formatCurrency(value) {
     margin-left: 0;
     padding-top: 60px;
     padding-bottom: 80px;
+  }
+  .main-content {
+    padding: var(--spacing-md);
   }
   .stats-grid { grid-template-columns: 1fr; }
 }

@@ -365,10 +365,14 @@ onMounted(() => {
   transform: translateY(-6px);
 }
 
-/* Mobile: painel ocupa mais espaço */
 @media (max-width: 768px) {
   .notification-panel {
-    width: 300px;
+    position: fixed;
+    top: 68px;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto;
+    max-height: 70vh;
   }
 }
 </style>

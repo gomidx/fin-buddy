@@ -37,7 +37,9 @@ const chartOptions = {
   <div class="card">
     <h3 class="card-title">Gastos por Categoria</h3>
     <div v-if="data && data.length > 0" class="chart-wrapper">
-      <Doughnut :data="chartData" :options="chartOptions" />
+      <div class="chart-container">
+        <Doughnut :data="chartData" :options="chartOptions" />
+      </div>
     </div>
     <div v-else class="empty-state">Sem gastos registrados este mês.</div>
   </div>
@@ -61,7 +63,13 @@ const chartOptions = {
 }
 
 .chart-wrapper {
-  max-width: 300px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.chart-container {
+  max-width: 280px;
+  width: 100%;
   margin: 0 auto;
 }
 

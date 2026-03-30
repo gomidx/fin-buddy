@@ -2,6 +2,7 @@
 import { useRouter, useRoute } from 'vue-router'
 import { LayoutDashboard, ArrowLeftRight, Shield, TrendingUp, Target, User, LogOut, Heart, Plus } from 'lucide-vue-next'
 import NotificationBell from '../ui/NotificationBell.vue'
+import FinBuddyLogo from '../ui/FinBuddyLogo.vue'
 import { useUiStore } from '../../stores/ui.js'
 
 const emit = defineEmits(['logout'])
@@ -13,16 +14,7 @@ const ui     = useUiStore()
 <template>
   <aside class="sidebar">
     <div class="brand">
-      <div class="brand-dot"></div>
-      <span class="brand-name">Fin Buddy</span>
-    </div>
-
-    <!-- Nova Transação -->
-    <div class="new-tx-wrapper">
-      <button class="btn-new-tx" @click="ui.openTransactionModal()">
-        <Plus :size="16" />
-        Nova transação
-      </button>
+      <FinBuddyLogo width="75%" />
     </div>
 
     <nav class="nav">
@@ -83,14 +75,21 @@ const ui     = useUiStore()
       </button>
     </nav>
 
-    <div class="sidebar-footer">
-      <div class="sidebar-notif">
-        <NotificationBell align="left" direction="up" />
-      </div>
-      <button class="nav-link logout-btn" @click="emit('logout')">
-        <LogOut :size="18" />
-        Sair
+    <div class="new-tx-wrapper">
+      <button class="btn-new-tx" @click="ui.openTransactionModal()">
+        <Plus :size="16" />
+        Nova transação
       </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="footer-row">
+        <NotificationBell align="left" direction="up" />
+        <button class="nav-link logout-btn" @click="emit('logout')">
+          <LogOut :size="18" />
+          Sair
+        </button>
+      </div>
     </div>
   </aside>
 </template>
@@ -106,30 +105,18 @@ const ui     = useUiStore()
   border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-lg) 0;
+  padding: 0;
   z-index: 100;
 }
 
 .brand {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 var(--spacing-lg) var(--spacing-lg);
+  justify-content: center;
+  padding: var(--spacing-md) 0 var(--spacing-md);
   border-bottom: 1px solid var(--color-border);
   margin-bottom: var(--spacing-md);
 }
 
-.brand-dot {
-  width: 32px;
-  height: 32px;
-  background: var(--color-primary);
-  border-radius: 50%;
-}
-
-.brand-name {
-  font-size: 18px;
-  font-weight: 700;
-}
 
 .new-tx-wrapper {
   padding: 0 var(--spacing-md) var(--spacing-md);
@@ -192,15 +179,12 @@ const ui     = useUiStore()
 
 .sidebar-footer {
   padding: var(--spacing-sm) var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
 }
 
-.sidebar-notif {
+.footer-row {
   display: flex;
-  justify-content: flex-start;
-  padding: 0 var(--spacing-xs);
+  align-items: center;
+  gap: var(--spacing-xs);
 }
 
 .logout-btn:hover {

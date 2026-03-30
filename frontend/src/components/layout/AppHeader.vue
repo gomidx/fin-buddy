@@ -1,6 +1,7 @@
 <script setup>
 import { LogOut } from 'lucide-vue-next'
 import NotificationBell from '../ui/NotificationBell.vue'
+import FinBuddyLogo from '../ui/FinBuddyLogo.vue'
 
 const props = defineProps({
   user: { type: Object, default: null },
@@ -17,8 +18,7 @@ function getInitials(name) {
 <template>
   <header class="app-header">
     <div class="brand">
-      <div class="brand-dot"></div>
-      <span class="brand-name">Fin Buddy</span>
+      <FinBuddyLogo :width="120" />
     </div>
     <div class="header-right">
       <NotificationBell />
@@ -52,17 +52,6 @@ function getInitials(name) {
   gap: 8px;
 }
 
-.brand-dot {
-  width: 28px;
-  height: 28px;
-  background: var(--color-primary);
-  border-radius: 50%;
-}
-
-.brand-name {
-  font-size: 16px;
-  font-weight: 700;
-}
 
 .header-right {
   display: flex;
